@@ -1,6 +1,6 @@
-import json
-import os
-from flask import Flask, jsonify
+import json     # Modul Json importieren
+import os   # Modul os importieren, um mit Dateipfaden zu arbeiten  
+from flask import Flask, jsonify    # Vom Flask und jsonify importieren, um eine Webanwendung zu erstellen
 
 
 app = Flask(__name__)
