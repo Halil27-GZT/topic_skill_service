@@ -9,6 +9,8 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 # Erstellt einen Pfad zum "data"-Ordner im gleichen Verzeichnis wie diese Datei
 TOPICS_FILE = os.path.join(DATA_DIR, 'topics.json')
 # Erstellt den vollständigen Pfad zur Datei "topics.json" im data-Ordner
+SKILLS_FILE = os.path.join(DATA_DIR, 'skills.json')
+# Erstellt den vollständigen Pfad zur Datei "skills.json" im data-Ordner
 
 
 # Diese Route wird aufgerufen, wenn jemand die Startseite ("/") der Website besucht
@@ -25,6 +27,39 @@ def get_topics():
     topics = data_manager.read_data(TOPICS_FILE)
     # Gibt die Inhalte als JSON-Antwort zurück
     return jsonify(topics)
+
+
+@app.route('/skills', methods=['GET'])
+# Diese Route wird aufgerufen, wenn ein GET-Request an /skills gesendet wird
+def get_skills():
+    # Liest die Inhalte der Datei skills.json (z. B. eine Liste von Fähigkeiten)
+    skills = data_manager.read_data(SKILLS_FILE)
+    # Gibt die Inhalte als JSON-Antwort zurück
+    return jsonify(skills)
+
+
+@app.route('/topics/<id>', methods=['GET'])
+# Diese Route wird aufgerufen, wenn ein GET-Request an /topics/<id> gesendet wird
+def get_topic_by_id(id):
+    # Liest die Inhalte der Datei topics.json
+    topics = data_manager.read_data(TOPICS_FILE)
+    # Sucht nach dem Thema mit der angegebenen ID
+    topic = next((topic for topic in topics if topic.get('id').lower() == id.lower()), None)
+    # Gibt das gefundene Thema als JSON-Antwort zurück oder 404, wenn nicht gefunden
+    return jsonify(topic) if topic else ('', 404)
+
+
+@app.route('/skills/<id>', methods=['GET'])
+# Diese Route wird aufgerufen, wenn ein GET-Request an /skills/<id> gesendet wird
+def get_skill_by_id(id):
+    # Liest die Inhalte der Datei skills.json
+    skills = data_manager.read_data(SKILLS_FILE)
+    # Sucht nach der Fähigkeit mit der angegebenen ID
+    skill = next((skill for skill in skills if skill.get('id').lower() == id.lower()), None)
+    # Gibt die gefundene Fähigkeit als JSON-Antwort zurück oder 404, wenn nicht gefunden
+    return jsonify(skill) if skill else ('', 404)
+
+
 
 # Dieser Block wird nur ausgeführt, wenn das Skript direkt gestartet wird
 if __name__ == '__main__':
