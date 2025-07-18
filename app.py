@@ -1,5 +1,6 @@
 import os   # Modul os importieren, um mit Dateipfaden zu arbeiten  
-from flask import Flask, jsonify    # Vom Flask und jsonify importieren, um eine Webanwendung zu erstellen
+from flask import Flask, jsonify, request
+import uuid # Vom Flask und jsonify importieren, um eine Webanwendung zu erstellen
 from data_manager import JsonDataManager  # Importiert die JsonDataManager-Klasse aus der Datei data_manager.py
 
 app = Flask(__name__)   # Erstellt eine Flask-Anwendung
@@ -60,6 +61,29 @@ def get_skill_by_id(id):
     return jsonify(skill) if skill else ('', 404)
 
 
+@app.route('/topics', methods=['POST'])
+# Diese Route wird aufgerufen, wenn ein POST-Request an /topics gesendet wird
+def create_topic():
+    # Liest die Daten aus der Anfrage
+    new_topic_data = request.json
+    
+    if not new_topic_data or 'name' not in new_topic_data or 'description' not in new_topic_data:
+        return jsonify({'error': "'name' and 'description' for the topic are required in the request body."}), 400
+    
+    new_topic_id = str(uuid.uuid4())
+    
+    topic = {
+        'id': new_topic_id,
+        'name': new_topic_data.get('name'),
+        'description': new_topic_data.get('description', '')
+    }
+    
+    topics = data_manager.read_data(TOPICS_FILE)
+    topics.append(topic)
+    
+    data_manager.write_data(TOPICS_FILE, topics)
+    
+    return jsonify(topic), 201
 
 # Dieser Block wird nur ausgeführt, wenn das Skript direkt gestartet wird
 if __name__ == '__main__':
