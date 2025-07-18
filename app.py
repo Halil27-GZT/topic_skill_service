@@ -9,6 +9,8 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 # Erstellt einen Pfad zum "data"-Ordner im gleichen Verzeichnis wie diese Datei
 TOPICS_FILE = os.path.join(DATA_DIR, 'topics.json')
 # Erstellt den vollständigen Pfad zur Datei "topics.json" im data-Ordner
+SKILLS_FILE = os.path.join(DATA_DIR, 'skills.json')
+# Erstellt den vollständigen Pfad zur Datei "skills.json" im data-Ordner
 
 
 # Diese Route wird aufgerufen, wenn jemand die Startseite ("/") der Website besucht
@@ -25,6 +27,15 @@ def get_topics():
     topics = data_manager.read_data(TOPICS_FILE)
     # Gibt die Inhalte als JSON-Antwort zurück
     return jsonify(topics)
+
+
+@app.route('/skills', methods=['GET'])
+# Diese Route wird aufgerufen, wenn ein GET-Request an /skills gesendet wird
+def get_skills():
+    # Liest die Inhalte der Datei skills.json (z. B. eine Liste von Fähigkeiten)
+    skills = data_manager.read_data(SKILLS_FILE)
+    # Gibt die Inhalte als JSON-Antwort zurück
+    return jsonify(skills)
 
 # Dieser Block wird nur ausgeführt, wenn das Skript direkt gestartet wird
 if __name__ == '__main__':
