@@ -37,6 +37,17 @@ def get_skills():
     # Gibt die Inhalte als JSON-Antwort zurück
     return jsonify(skills)
 
+
+@app.route('/topics/<id>', methods=['GET'])
+# Diese Route wird aufgerufen, wenn ein GET-Request an /topics/<id> gesendet wird
+def get_topic_by_id(id):
+    # Liest die Inhalte der Datei topics.json
+    topics = data_manager.read_data(TOPICS_FILE)
+    # Sucht nach dem Thema mit der angegebenen ID
+    topic = next((topic for topic in topics if topic.get('id').lower() == id.lower()), None)
+    # Gibt das gefundene Thema als JSON-Antwort zurück oder 404, wenn nicht gefunden
+    return jsonify(topic) if topic else ('', 404)
+
 # Dieser Block wird nur ausgeführt, wenn das Skript direkt gestartet wird
 if __name__ == '__main__':
     # Startet die Flask-Anwendung im Debug-Modus auf Port 5000
