@@ -85,6 +85,37 @@ def create_topic():
     
     return jsonify(topic), 201
 
+
+@app.route('/skills', methods=['POST'])
+# Diese Route wird aufgerufen, wenn ein POST-Request an /skills gesendet wird
+def create_skill():
+    # Liest die Daten aus der Anfrage
+    new_skill_data = request.json
+    # Überprüft, ob die erforderlichen Felder 'name' und 'description' im Request-Body vorhanden sind
+    
+    # Wenn die erforderlichen Felder fehlen, gibt es eine Fehlermeldung zurück
+    # Die Felder 'name' und 'description' sind erforderlich
+    if not new_skill_data or 'name' not in new_skill_data or 'topicId' not in new_skill_data:
+        return jsonify({'error': "Name und Topic ID für den Skill sind erforderlich"}), 400
+    
+    new_skill_id = str(uuid.uuid4())
+    # Generiert eine neue, eindeutige ID für die Fähigkeit
+    # Erstellt ein neues Fähigkeitsobjekt mit der generierten ID und den übergebenen Daten
+    # Die ID wird als String generiert, um sie in der JSON-Datei zu speichern
+    
+    skill = {
+        'id': new_skill_id,
+        'name': new_skill_data.get('name'),
+        'topicId': new_skill_data.get('topicId'),
+        'difficulty': new_skill_data.get('difficulty', 'unknown'), # Standardwert 'unknown' für Schwierigkeit
+    }
+    
+    skills = data_manager.read_data(SKILLS_FILE)
+    skills.append(skill)
+    data_manager.write_data(SKILLS_FILE, skills)
+    
+    return jsonify(skill), 201
+
 # Dieser Block wird nur ausgeführt, wenn das Skript direkt gestartet wird
 if __name__ == '__main__':
     # Startet die Flask-Anwendung im Debug-Modus auf Port 5000
