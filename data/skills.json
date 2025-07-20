@@ -1,9 +1,9 @@
 [
     {
         "id": "s1",
-        "name": "HTML Basics",
+        "name": "HTML & CSS Layouts (Aktualisiert)",
         "topicId": "t1",
-        "difficulty": "beginner"
+        "difficulty": "intermediate"
     },
     {
         "id": "s2",
@@ -28,6 +28,18 @@
     },
     {
         "id": "d3473a8d-4d99-4a26-a1fb-2f2889960bc2",
+        "name": "Grundlagen von Python",
+        "topicId": "t3",
+        "difficulty": "beginner"
+    },
+    {
+        "id": "8d0cab05-3d71-4b57-bca8-e10ba89a2efd",
+        "name": "Grundlagen von Python",
+        "topicId": "t3",
+        "difficulty": "beginner"
+    },
+    {
+        "id": "9a2b239c-6a8f-4ca5-bd7d-c9f640e45877",
         "name": "Grundlagen von Python",
         "topicId": "t3",
         "difficulty": "beginner"

@@ -147,7 +147,40 @@ def update_topic(id):
     topics[found_index]['description'] = updated_data.get('description', '') # Standardwert für Beschreibung ist ein leerer String
     # Schreibt die aktualisierten Themen zurück in die Datei
     data_manager.write_data(TOPICS_FILE, topics) # Gibt das aktualisierte Thema als JSON-Antwort zurück
-    return jsonify(topics[found_index]), 200 
+    return jsonify(topics[found_index]), 200
+
+
+@app.route('/skills/<id>', methods=['PUT'])
+# Diese Route wird aufgerufen, wenn ein PUT-Request an /skills/<id> gesendet wird
+def update_skill(id):
+    update_data = request.json
+    # Liest die Daten aus der Anfrage
+    # Überprüft, ob die erforderlichen Felder 'name' und 'topicId' im Request-Body vorhanden sind
+    if not update_data or 'name' not in update_data or 'topicId' not in update_data:
+        return jsonify({'error': "Name und Topic ID für den Skill sind erforderlich"}), 400
+    
+    skills = data_manager.read_data(SKILLS_FILE)
+    # Liest die Inhalte der Datei skills.json
+    found_index = -1
+    # Initialisiert den Index des gefundenen Skills auf -1 (nicht gefunden)
+    for index, skill in enumerate(skills):
+        if skill.get('id').lower() == id.lower():
+            found_index = index
+            break
+    
+    if found_index == -1:
+        # Wenn der Skill nicht gefunden wurde, gibt es eine 404-Fehlermeldung zurück
+        return jsonify({"error": "Skill not found"}), 404
+    
+    # Aktualisiert den gefundenen Skill mit den neuen Daten
+    skills[found_index]['name'] = update_data.get('name')
+    skills[found_index]['topicId'] = update_data.get('topicId')
+    skills[found_index]['difficulty'] = update_data.get('difficulty', 'unknown')
+    # Standardwert für Schwierigkeit ist 'unknown'
+    # Schreibt die aktualisierten Skills zurück in die Datei
+    data_manager.write_data(SKILLS_FILE, skills)
+    # Gibt den aktualisierten Skill als JSON-Antwort zurück
+    return jsonify(skills[found_index]), 200
 
 
 # Dieser Block wird nur ausgeführt, wenn das Skript direkt gestartet wird
