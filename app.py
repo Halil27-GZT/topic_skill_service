@@ -183,6 +183,56 @@ def update_skill(id):
     return jsonify(skills[found_index]), 200
 
 
+@app.route('/topics/<id>', methods=['DELETE'])
+# Diese Route wird aufgerufen, wenn ein DELETE-Request an /topics/<id> gesendet wird
+# Löscht ein Thema mit der angegebenen ID
+def delte_topic(id):
+    topics = data_manager.read_data(TOPICS_FILE)
+    # Liest die Inhalte der Datei topics.json
+
+    found_index = -1
+    # Initialisiert den Index des gefundenen Themas auf -1 (nicht gefunden)
+    for index, topic in enumerate(topics):
+        if topic.get('id').lower() == id.lower():
+            found_index = index
+            break
+        
+    if found_index == -1:
+        # Wenn das Thema nicht gefunden wurde, gibt es eine 404-Fehlermeldung zurück
+        return jsonify({"error": "Topic not found"}), 404
+    # Entfernt das gefundene Thema aus der Liste
+    deleted_topic = topics.pop(found_index)
+    # Schreibt die aktualisierten Themen zurück in die Datei
+    data_manager.write_data(TOPICS_FILE, topics)
+    # Gibt das gelöschte Thema als JSON-Antwort zurück
+    return '', 204  # 204 No Content, da das Thema erfolgreich gelöscht wurde
+
+
+@app.route('/skills/<id>', methods=['DELETE'])
+# Diese Route wird aufgerufen, wenn ein DELETE-Request an /skills/<id> gesendet wird
+def delete_skill(id):
+    skills = data_manager.read_data(SKILLS_FILE)
+    # Liest die Inhalte der Datei skills.json
+
+    found_index = -1
+    # Initialisiert den Index des gefundenen Skills auf -1 (nicht gefunden)
+    for index, skill in enumerate(skills):
+        if skill.get('id').lower() == id.lower():
+            found_index = index
+            break
+    
+    if found_index == -1:
+        # Wenn der Skill nicht gefunden wurde, gibt es eine 404-Fehlermeldung zurück
+        return jsonify({"error": "Skill not found"}), 404
+    
+    # Entfernt den gefundenen Skill aus der Liste
+    deleted_skill = skills.pop(found_index)
+    # Schreibt die aktualisierten Skills zurück in die Datei
+    data_manager.write_data(SKILLS_FILE, skills)
+    # Gibt das gelöschte Thema als JSON-Antwort zurück
+    return '', 204
+
+
 # Dieser Block wird nur ausgeführt, wenn das Skript direkt gestartet wird
 if __name__ == '__main__':
     # Startet die Flask-Anwendung im Debug-Modus auf Port 5000

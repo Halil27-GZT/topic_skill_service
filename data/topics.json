@@ -1,15 +1,5 @@
 [
     {
-        "id": "t1",
-        "name": "Web Dev Grundlagen (Aktualisiert)",
-        "description": "Alle Kernkonzepte des Web Development, jetzt mit Fokus auf moderne Standards."
-    },
-    {
-        "id": "t2",
-        "name": "Frontend Development",
-        "description": "Fokus auf die Benutzeroberfl\u00e4che und Interaktion, wie React, Vue oder Angular."
-    },
-    {
         "id": "t3",
         "name": "Backend Development",
         "description": "Server-seitige Logik, Datenbanken und APIs, z.B. mit Python Flask oder Node.js Express."
@@ -46,6 +36,11 @@
     },
     {
         "id": "c4769123-28d5-4e64-96b5-d086a581b00d",
+        "name": "Grundlagen der K\u00fcnstlichen Intelligenz",
+        "description": "Eine Einf\u00fchrung in die Konzepte und Anwendungen von KI, einschlie\u00dflich maschinellem Lernen und neuronalen Netzen."
+    },
+    {
+        "id": "32e36e85-18ea-4d90-bb8c-8afbba2c5910",
         "name": "Grundlagen der K\u00fcnstlichen Intelligenz",
         "description": "Eine Einf\u00fchrung in die Konzepte und Anwendungen von KI, einschlie\u00dflich maschinellem Lernen und neuronalen Netzen."
     }
