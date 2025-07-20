@@ -116,8 +116,43 @@ def create_skill():
     
     return jsonify(skill), 201
 
+
+@app.route('/topics/<id>', methods=['PUT'])
+# Diese Route wird aufgerufen, wenn ein PUT-Request an /topics/<id> gesendet wird
+def update_topic(id):
+    updated_data = request.json
+    # Liest die Daten aus der Anfrage
+    
+    # Überprüft, ob die erforderlichen Felder 'name' und 'description' im Request-Body vorhanden sind
+    # Wenn die erforderlichen Felder fehlen, gibt es eine Fehlermeldung zurück
+    # Die Felder 'name' und 'description' sind erforderlich
+    if not updated_data or 'name' not in updated_data or 'description' not in updated_data:
+        return jsonify({'error': "Name und Beschreibung für das Topic sind erforderlich."}), 400
+    
+    topics = data_manager.read_data(TOPICS_FILE)
+    # Liest die Inhalte der Datei topics.json
+    
+    found_index = -1
+    # Initialisiert den Index des gefundenen Themas auf -1 (nicht gefunden)
+    for index, topic in enumerate(topics):
+        if topic.get('id').lower() == id.lower():
+            found_index = index
+            break
+        
+    if found_index == -1: 
+        # Wenn das Thema nicht gefunden wurde, gibt es eine 404-Fehlermeldung zurück
+        return jsonify({"error": "Topic not found"}), 404
+    # Aktualisiert das gefundene Thema mit den neuen Daten
+    topics[found_index]['name'] = updated_data.get('name') # Aktualisiert den Namen des Themas
+    topics[found_index]['description'] = updated_data.get('description', '') # Standardwert für Beschreibung ist ein leerer String
+    # Schreibt die aktualisierten Themen zurück in die Datei
+    data_manager.write_data(TOPICS_FILE, topics) # Gibt das aktualisierte Thema als JSON-Antwort zurück
+    return jsonify(topics[found_index]), 200 
+
+
 # Dieser Block wird nur ausgeführt, wenn das Skript direkt gestartet wird
 if __name__ == '__main__':
     # Startet die Flask-Anwendung im Debug-Modus auf Port 5000
+    # Dies ermöglicht eine einfachere Fehlersuche und automatisches Neuladen bei Änderungen
     app.run(debug=True, port=5000)
     
